@@ -13,13 +13,12 @@ let drinksFavorites = [];
 
 //funcion para seleccionar los favoritos
 const addFavorites = (ev) => {
-    console.log(ev.currentTarget.id);
-    //obtener datos de la paleta clicada
-    const liClikedId = ev.currentTarget.id;
-    const clikedDrinkData = drinksData.find((item) => item.idDrink === liClikedId);
-    //item.idDrink es el valor que va a buscar dentro del array
 
-    //verificar si el drink clicado ya es un favorito
+    //obter el id de todo el elemento clicado 
+    const liClikedId = ev.currentTarget.id;
+    //buscar datos del drink por el id (el idDrink es el valor dentro del array)
+    const clikedDrinkData = drinksData.find((item) => item.idDrink === liClikedId);
+    //verifica si el drink clicado ya es un favorito
     const favoriteLiClickedIndex = drinksFavorites.findIndex((item) => item.idDrink === liClikedId);
 
     if(favoriteLiClickedIndex === -1){
@@ -28,7 +27,8 @@ const addFavorites = (ev) => {
     } else{
         //quitar del array de fav
         drinksFavorites.splice(favoriteLiClickedIndex, 1);
-    }       
+    }   
+
     renderCocktails(drinksData);
     renderDrinksFav(drinksFavorites);
     //se guarda los datos en el localstorage los favoritos
@@ -37,20 +37,22 @@ const addFavorites = (ev) => {
 
 //renderizar todos los cockteles
 function renderCocktails (list){
-    ulList.innerHTML = '';    
-    for (const eachCocktail of list){
+    ulList.innerHTML = ''; //borra el lo que esta en la lista
+
+    for (const eachCocktail of list){ //verifica si el drink esta en favotitos
         const indexFav = drinksFavorites.findIndex(item => item.idDrink === eachCocktail.idDrink);
-        let classCss = indexFav === -1 ? '' : 'blue';
+        let classCss = indexFav === -1 ? '' : 'orange';
+
         ulList.innerHTML += `<li class = "card js_list_cocktails ${classCss}" id= "${eachCocktail.idDrink}">                 
         <img class="photo" src = "${eachCocktail.strDrinkThumb}"/>
-        <h3> ${eachCocktail.strDrink} </h3>
+        <h3 class ="name-drink"> ${eachCocktail.strDrink} </h3>
         </li>`
     }
-
+    //cria un evento de click para cada drink add en los favoritos
     const allDrinksLi = document.querySelectorAll('.js_list_cocktails');
     for (const li of allDrinksLi) {
         li.addEventListener("click", addFavorites);        
-    }
+    }    
 };
 
 //crea la lista de favoritos
@@ -59,10 +61,35 @@ const renderDrinksFav = (indexFav) => {
     for (const drink of indexFav) {
         drinksFavHTML += `<li class = "card">
         <img class="photo" src="${drink.strDrinkThumb}"/>
-        <h3>${drink.strDrink}</h3>
-        </li>`;
+        <h3 class ="name-drink">${drink.strDrink}</h3>
+        <button class=" btn_x js_btn_remove" data-id="${drink.idDrink}">X</button>
+        </li> `;
     }
     ulListFav.innerHTML = drinksFavHTML
+
+    //remover favorito con el boton X
+    const removeButtons = document.querySelectorAll('.js_btn_remove');
+    removeButtons.forEach(button => {
+        button.addEventListener('click', removeFavorite);
+    });
+};
+
+const removeFavorite = (ev) => {
+    const drinkIdRemove = ev.target.getAttribute('data-id');
+
+    //encontra el índice del drink que va a ser removido
+    const indexRemove = drinksFavorites.findIndex(item => item.idDrink === drinkIdRemove);
+    
+    if (indexRemove !== -1) {
+        // Remove el drink de la lista de favoritos
+        drinksFavorites.splice(indexRemove, 1);
+
+        // renderiza otra vez el listado de favoritos
+        renderDrinksFav(drinksFavorites);
+
+        // actualiza el LS con la lista de favoritos actualizada
+        localStorage.setItem("favoriteDrink", JSON.stringify(drinksFavorites));
+    }
 };
 
 //obtener datos de la api.
@@ -101,6 +128,7 @@ function handleClickReset(event){
 };
 
 const init = () => { //para usar los datos en el localstorage
+
     const drinksFavLocal = localStorage.getItem('favoriteDrink');
     if (drinksFavLocal !== null){
         drinksFavorites = JSON.parse(drinksFavLocal);
@@ -109,9 +137,10 @@ const init = () => { //para usar los datos en el localstorage
     const drinksLocal = localStorage.getItem('drinks');
     if (drinksLocal !== null){
         drinksData = JSON.parse(drinksLocal);
-        renderCocktails(drinksData);
+        renderCocktails(drinksData); //Renderiza os cocktails após carregar os dados
+        renderDrinksFav(drinksFavorites); // Renderiza os favoritos após carregar os dados
     } else {
-        getData();
+        getData(); // Chama getData() se os dados não estiverem no localStorage
     }
 };
 

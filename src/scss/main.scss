@@ -16,6 +16,28 @@
     padding-bottom: 20px;
 }
 
+.cocktail-input{
+    height: 20px;
+    width: 20%;
+    border: solid 2px orange;
+}
+
+.button-search{
+    height: 25px;
+    background-color: orange;
+    color: white;
+    border: 0;
+    margin-left: 15px;
+}
+
+.button-reset{
+    height: 25px;
+    background-color: orange;
+    color: white;
+    border: 0;
+    margin-left: 15px;
+}
+
 .container{
     display: flex;
     flex-direction: row;
@@ -63,7 +85,16 @@ width: 90px;
 height: 80px;
 }
 
-.blue{
-    background-color: rgb(148, 148, 231);
+.name-drink{
+    font-size: small;  
 }
 
+.orange{
+    background-color: orange;
+}
+
+.btn_x{
+    border-radius: 10px;
+    background-color: black;
+    color: white;
+}
