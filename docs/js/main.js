@@ -1,2 +1,9 @@
-console.log(">> Ready :)");
+const l=document.querySelector(".js_cocktails"),f=document.querySelector(".js_favorites"),d=document.querySelector(".js_input"),h=document.querySelector(".js_btn_search"),v=document.querySelector(".js_btn_reset");let r=[],s=[];const m=t=>{const n=t.currentTarget.id,i=r.find(o=>o.idDrink===n),e=s.findIndex(o=>o.idDrink===n);e===-1?s.push(i):s.splice(e,1),c(r),a(s),localStorage.setItem("favoriteDrink",JSON.stringify(s))};function c(t){l.innerHTML="";for(const i of t){let o=s.findIndex(u=>u.idDrink===i.idDrink)===-1?"":"orange";l.innerHTML+=`<li class = "card js_list_cocktails ${o}" id= "${i.idDrink}">                 
+        <img class="photo" src = "${i.strDrinkThumb}"/>
+        <h3 class ="name-drink"> ${i.strDrink} </h3>
+        </li>`}const n=document.querySelectorAll(".js_list_cocktails");for(const i of n)i.addEventListener("click",m)}const a=t=>{let n="";for(const e of t)n+=`<li class = "card">
+        <img class="photo" src="${e.strDrinkThumb}"/>
+        <h3 class ="name-drink">${e.strDrink}</h3>
+        <button class=" btn_x js_btn_remove" data-id="${e.idDrink}">X</button>
+        </li> `;f.innerHTML=n,document.querySelectorAll(".js_btn_remove").forEach(e=>{e.addEventListener("click",D)})},D=t=>{const n=t.target.getAttribute("data-id"),i=s.findIndex(e=>e.idDrink===n);i!==-1&&(s.splice(i,1),a(s),localStorage.setItem("favoriteDrink",JSON.stringify(s)))};function k(){fetch("https://www.thecocktaildb.com/api/json/v1/1/search.php?s=margarita").then(t=>t.json()).then(t=>{r=t.drinks,c(r),localStorage.setItem("drinks",JSON.stringify(r))})}function S(t){t.preventDefault();const n=d.value;fetch(`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${n}`).then(e=>e.json()).then(e=>{r=e.drinks,c(r)});const i=r.filter(e=>e.strDrink.toLowerCase().includes(n.toLowerCase()));c(i)}function p(t){t.preventDefault(),d.value="",k()}const g=()=>{const t=localStorage.getItem("favoriteDrink");t!==null&&(s=JSON.parse(t));const n=localStorage.getItem("drinks");n!==null?(r=JSON.parse(n),c(r),a(s)):k()};g();h.addEventListener("click",S);v.addEventListener("click",p);
 //# sourceMappingURL=main.js.map
