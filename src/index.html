@@ -8,25 +8,30 @@
   <title>Buscador Cócteles</title>
 </head>
 
-<header>
+<header class="header">
   <h1>Buscador Cócteles</h1>
 </header>
 
 <body>
-  <main>
-    <section>
-      <form>
-        <input type="text" class="cocktail-input js_input" placeholder="margarita">
-        <button class="button-search js_btn_search">BUSCAR</button>
-        <button class="button-reset js_btn_reset">RESET</button>
-      </form>
-      <div>
-        <h2> Lista </h2>
+  <form class="search">
+    <input type="text" class="cocktail-input js_input" placeholder="margarita">
+    <button class="button-search js_btn_search">BUSCAR</button>
+    <button class="button-reset js_btn_reset">RESET</button>
+  </form>
+
+  <main class="container">       
+      <div class="container__fav">
+        <h2 class="container__title--fav"> Cócteles Favoritos</h2>
+        <ul class="container__card js_favorites"></ul>
       </div>
-      <ul class="cocktail-list js_cocktails"></ul>
-    </section>
+
+      <div class="container__list">
+        <h2 class="container__title--list">Lista </h2>
+        <ul class="container__card js_cocktails"></ul>
+      </div>    
   </main>
-  <script src="./js/main.js"></script>
+
+<script src="./js/main.js"></script>
 </body>
 
 </html>
