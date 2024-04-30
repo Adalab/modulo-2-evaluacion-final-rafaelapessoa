@@ -5,6 +5,7 @@ const ulListFav = document.querySelector(".js_favorites");
 const inputSearch = document.querySelector(".js_input");
 const buttonSearch = document.querySelector(".js_btn_search");
 const buttonReset = document.querySelector(".js_btn_reset");
+const buttonRemoveAll = document.querySelector(".js_btn_remove");
 
 
 let drinksData = [];
@@ -68,6 +69,13 @@ const renderDrinksFav = (indexFav) => {
     }
     ulListFav.innerHTML = drinksFavHTML
 
+    //condicional para enseñar el boton de remover todos cuando tenga fav en la lista
+    if (indexFav.length > 0) {
+        buttonRemoveAll.style.display = 'block';
+    } else {
+        buttonRemoveAll.style.display = 'none';
+    }
+
     //remover favorito con el boton X
     const removeButton = document.querySelectorAll('.js_btn_remove');
     removeButton.forEach(button => {
@@ -127,6 +135,15 @@ function handleClickReset(event){
     getData();
 };
 
+//escuchar evento sobre el boton de borrar todos los favoritos
+function handleClickAll(event){
+    event.preventDefault();
+    drinksFavorites = []; // limpia la lista de favoritos
+    renderDrinksFav(drinksFavorites); // vuelve a renderizar los favoritos
+    renderCocktails(drinksData); // vuelve a renderizar todos para quitar el color
+    localStorage.setItem("favoriteDrink", JSON.stringify(drinksFavorites)); //actualiza LS   
+}
+
 const init = () => { //para usar los datos en el localstorage
 
     const drinksFavLocal = localStorage.getItem('favoriteDrink');
@@ -137,10 +154,10 @@ const init = () => { //para usar los datos en el localstorage
     const drinksLocal = localStorage.getItem('drinks');
     if (drinksLocal !== null){
         drinksData = JSON.parse(drinksLocal);
-        renderCocktails(drinksData); //Renderiza os cocktails após carregar os dados
-        renderDrinksFav(drinksFavorites); // Renderiza os favoritos após carregar os dados
+        renderCocktails(drinksData); 
+        renderDrinksFav(drinksFavorites);
     } else {
-        getData(); // Chama getData() se os dados não estiverem no localStorage
+        getData(); // llamar a getData si los datos no estam el LS
     }
 };
 
@@ -148,4 +165,5 @@ init();
 
 buttonSearch.addEventListener("click", handleClickSearch);
 buttonReset.addEventListener("click", handleClickReset);
+buttonRemoveAll.addEventListener("click", handleClickAll);
 
