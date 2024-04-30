@@ -16,7 +16,7 @@ const addFavorites = (ev) => {
 
     //obter el id de todo el elemento clicado 
     const liClikedId = ev.currentTarget.id;
-    //buscar datos del drink por el id (el idDrink es el valor dentro del array)
+    //buscar datos del drink por el id (.idDrink es el valor dentro del array)
     const clikedDrinkData = drinksData.find((item) => item.idDrink === liClikedId);
     //verifica si el drink clicado ya es un favorito
     const favoriteLiClickedIndex = drinksFavorites.findIndex((item) => item.idDrink === liClikedId);
@@ -41,6 +41,7 @@ function renderCocktails (list){
 
     for (const eachCocktail of list){ //verifica si el drink esta en favotitos
         const indexFav = drinksFavorites.findIndex(item => item.idDrink === eachCocktail.idDrink);
+        
         let classCss = indexFav === -1 ? '' : 'orange';
 
         ulList.innerHTML += `<li class = "card js_list_cocktails ${classCss}" id= "${eachCocktail.idDrink}">                 
@@ -61,16 +62,16 @@ const renderDrinksFav = (indexFav) => {
     for (const drink of indexFav) {
         drinksFavHTML += `<li class = "card">
         <img class="photo" src="${drink.strDrinkThumb}"/>
-        <h3 class ="name-drink">${drink.strDrink}</h3>
-        <button class=" btn_x js_btn_remove" data-id="${drink.idDrink}">X</button>
-        </li> `;
+        <h3 class ="name-drink">${drink.strDrink}</h3>        
+        </li> 
+        <button class=" btn_x js_btn_remove" data-id="${drink.idDrink}">X</button>`;
     }
     ulListFav.innerHTML = drinksFavHTML
 
     //remover favorito con el boton X
-    const removeButtons = document.querySelectorAll('.js_btn_remove');
-    removeButtons.forEach(button => {
-        button.addEventListener('click', removeFavorite);
+    const removeButton = document.querySelectorAll('.js_btn_remove');
+    removeButton.forEach(button => {
+        button.addEventListener('click', removeFavorite);        
     });
 };
 
@@ -83,10 +84,9 @@ const removeFavorite = (ev) => {
     if (indexRemove !== -1) {
         // Remove el drink de la lista de favoritos
         drinksFavorites.splice(indexRemove, 1);
-
         // renderiza otra vez el listado de favoritos
-        renderDrinksFav(drinksFavorites);
-
+        renderDrinksFav(drinksFavorites); // se rederiza otra vez para quitar el color
+        renderCocktails(drinksData);
         // actualiza el LS con la lista de favoritos actualizada
         localStorage.setItem("favoriteDrink", JSON.stringify(drinksFavorites));
     }
