@@ -55,6 +55,7 @@ function renderCocktails (list){
     for (const li of allDrinksLi) {
         li.addEventListener("click", addFavorites);        
     }    
+    localStorage.setItem("drinks", JSON.stringify(drinksData));
 };
 
 //crea la lista de favoritos
