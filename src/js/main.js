@@ -6,6 +6,7 @@ const inputSearch = document.querySelector(".js_input");
 const buttonSearch = document.querySelector(".js_btn_search");
 const buttonReset = document.querySelector(".js_btn_reset");
 const buttonRemoveAll = document.querySelector(".js_btn_remove");
+const buttonLog = document.querySelector(".js_btn_log");
 
 
 let drinksData = [];
@@ -48,7 +49,9 @@ function renderCocktails (list){
         ulList.innerHTML += `<li class = "card js_list_cocktails ${classCss}" id= "${eachCocktail.idDrink}">                 
         <img class="photo" src = "${eachCocktail.strDrinkThumb}"/>
         <h3 class ="name-drink"> ${eachCocktail.strDrink} </h3>
-        </li>`
+        <p>${eachCocktail.strCategory}</p>
+        </li>
+        `
     }
     //cria un evento de click para cada drink add en los favoritos
     const allDrinksLi = document.querySelectorAll('.js_list_cocktails');
@@ -70,7 +73,7 @@ const renderDrinksFav = (indexFav) => {
     }
     ulListFav.innerHTML = drinksFavHTML
 
-    //condicional para enseñar el boton de remover todos cuando tenga fav en la lista
+    //condicional para enseñar el boton de removeAll cuando tenga fav en la lista
     if (indexFav.length > 0) {
         buttonRemoveAll.style.display = 'block';
     } else {
@@ -158,7 +161,14 @@ const init = () => { //para usar los datos en el localstorage
         renderCocktails(drinksData); 
         renderDrinksFav(drinksFavorites);
     } else {
-        getData(); // llamar a getData si los datos no estam el LS
+        getData(); // llamar a getData si los datos no estan el LS
+    }
+};
+
+function handleClickLog(event){
+    event.preventDefault();
+    for (const drink of drinksFavorites) {
+        console.log (drink.strDrink);
     }
 };
 
@@ -167,4 +177,5 @@ init();
 buttonSearch.addEventListener("click", handleClickSearch);
 buttonReset.addEventListener("click", handleClickReset);
 buttonRemoveAll.addEventListener("click", handleClickAll);
+buttonLog.addEventListener("click", handleClickLog);
 
